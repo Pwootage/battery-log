@@ -2,22 +2,23 @@
 
 let fs = require('fs');
 let os = require('os');
+const battery = require('./node_modules/macstats/lib/battery');
 let file = 'log.csv';
 
 function logStuff() {
   let date = new Date();
   let dateStr = date.toISOString();
   let load = os.loadavg();
-  let stats = require('macstats');
+  let batstat = battery.getData();
   let log = [
     dateStr,
     load[0],
     load[1],
     load[2],
-    stats.battery.current_capacity,
-    stats.battery.max_capacity,
-    stats.battery.charged,
-    stats.battery.current_capacity / stats.battery.max_capacity
+    batstat.current_capacity,
+    batstat.max_capacity,
+    batstat.charged,
+    batstat.current_capacity / batstat.max_capacity
   ];
 
   let logMessage = log.join(',') + "\n";
